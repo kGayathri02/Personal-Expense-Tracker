@@ -7,7 +7,7 @@ uploaded_file = st.file_uploader("Upload your expense CSV file", type='csv')
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
 
-def data_clean(df):
+def data_clean():
     
     df= df.drop(columns= ['Subcategory','Note.1','Account.1',])
     df.fillna({'Note': 'Random'}, inplace=True)
