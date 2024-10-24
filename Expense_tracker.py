@@ -1,28 +1,26 @@
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
-from pathlib import Path
 
-def data_clean():
-    
-    uploaded_file = st.file_uploader("Upload your expense CSV file", type='csv')
+uploaded_file = st.file_uploader("Upload your expense CSV file", type='csv')
 
-    if uploaded_file:
-        
-        df = pd.read_csv(uploaded_file)
-        
-        df= df.drop(columns= ['Subcategory','Note.1','Account.1',])
-        df.fillna({'Note': 'Random'}, inplace=True)
+if uploaded_file:
+    df = pd.read_csv(uploaded_file)
+
+def data_clean(df):
     
-        df.loc[df['Currency']== 'USD', 'Amount'] = 1120.72
+    df= df.drop(columns= ['Subcategory','Note.1','Account.1',])
+    df.fillna({'Note': 'Random'}, inplace=True)
     
-        df= df.drop(columns= ['INR', 'Currency'])
+    df.loc[df['Currency']== 'USD', 'Amount'] = 1120.72
     
-        df['Date'] = pd.to_datetime(df['Date'])
-        df['Year']= df['Date'].dt.year
-        df['Month']= df['Date'].dt.month
+    df= df.drop(columns= ['INR', 'Currency'])
     
-        return df
+    df['Date'] = pd.to_datetime(df['Date'])
+    df['Year']= df['Date'].dt.year
+    df['Month']= df['Date'].dt.month
+    
+    return df
 
 df = data_clean()
 
