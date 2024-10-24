@@ -5,21 +5,24 @@ from pathlib import Path
 
 def data_clean():
     
-    df= Path(__file__).parents[1] / 'Downloads/expense_data_1.csv'
+    uploaded_file = st.file_uploader("Upload your expense CSV file", type='csv')
 
-    df= df.drop(columns= ['Subcategory','Note.1','Account.1',])
-
-    df.fillna({'Note': 'Random'}, inplace=True)
-
-    df.loc[df['Currency']== 'USD', 'Amount'] = 1120.72
-
-    df= df.drop(columns= ['INR', 'Currency'])
-
-    df['Date'] = pd.to_datetime(df['Date'])
-    df['Year']= df['Date'].dt.year
-    df['Month']= df['Date'].dt.month
-
-    return df
+    if uploaded_file:
+        
+        df = pd.read_csv(uploaded_file)
+        
+        df= df.drop(columns= ['Subcategory','Note.1','Account.1',])
+        df.fillna({'Note': 'Random'}, inplace=True)
+    
+        df.loc[df['Currency']== 'USD', 'Amount'] = 1120.72
+    
+        df= df.drop(columns= ['INR', 'Currency'])
+    
+        df['Date'] = pd.to_datetime(df['Date'])
+        df['Year']= df['Date'].dt.year
+        df['Month']= df['Date'].dt.month
+    
+        return df
 
 df = data_clean()
 
