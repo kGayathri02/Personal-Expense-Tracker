@@ -1,11 +1,11 @@
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
-
+from pathlib import Path
 
 def data_clean():
     
-    df= pd.read_csv(r"C:/Users/asalj/Downloads/expense_data_1.csv")
+    df= Path(__file__).parents[1] / 'Downloads/expense_data_1.csv'
 
     df= df.drop(columns= ['Subcategory','Note.1','Account.1',])
 
