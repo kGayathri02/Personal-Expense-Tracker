@@ -6,13 +6,11 @@ import matplotlib.pyplot as plt
     
 uploaded_file = st.file_uploader("Upload your CSV file", type="csv")
 st.info('Note:See Dashboard in Wide Mode, so that you can the last tab "Conclusion".', icon="ℹ️")
-# Initialize df
+
 df = None
 
-# Check if a file is uploaded
 if uploaded_file is not None:
     try:
-        # Read the uploaded file into a dataframe
         df = pd.read_csv(uploaded_file)
 
         def data_clean(df):
@@ -68,7 +66,6 @@ if uploaded_file is not None:
             income_monthly = income_df.groupby(['Year', 'Month'])['Amount'].sum().reset_index()
             expense_monthly = expense_df.groupby(['Year', 'Month'])['Amount'].sum().reset_index()
 
-            # Preview monthly income and expense
             st.write("\nMonthly Income:")
             st.write(income_monthly)
 
@@ -126,14 +123,12 @@ if uploaded_file is not None:
         with tab5:
             st.header('Track the proportion of income spent to understand how well you’re managing your finances.')
             st.subheader('Track Proportion of Income Spent by Month')
-                # Sum income and expense for each month
+            
             monthly_income = income_df.groupby('Month')['Amount'].sum().reset_index(name='Total_Income')
             monthly_expense = expense_df.groupby('Month')['Amount'].sum().reset_index(name='Total_Expense')
 
-            # Merge the two dataframes to calculate proportion
             monthly_finances = pd.merge(monthly_income, monthly_expense, on='Month', how='outer')
 
-            # Calculate the proportion of income spent
             monthly_finances['Proportion_Spent (%)'] = (monthly_finances['Total_Expense'] / monthly_finances['Total_Income']) * 100
 
             st.dataframe(monthly_finances)
@@ -153,10 +148,8 @@ if uploaded_file is not None:
             monthly_income = income_df.groupby('Month')['Amount'].sum().reset_index(name='Total_Income')
             monthly_expense = expense_df.groupby('Month')['Amount'].sum().reset_index(name='Total_Expense')
 
-            # Merge the income and expense data on 'Month'
             cash_flow = pd.merge(monthly_income, monthly_expense, on='Month', how='outer')
 
-            # Plot income and expense trends over time
             plt.figure(figsize=(10,6))
             plt.plot(cash_flow['Month'], cash_flow['Total_Income'], label='Income', marker='o', color='green')
             plt.plot(cash_flow['Month'], cash_flow['Total_Expense'], label='Expense', marker='o', color='red')
